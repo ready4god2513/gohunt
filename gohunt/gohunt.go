@@ -275,7 +275,16 @@ func (c *Client) submitVoteRequest(url string, values *url.Values) ([]Vote, erro
 	return votemap.Votes, nil
 }
 
-// Comment Routes
+// GetComments returns recent comments
+func (c *Client) GetComments(newerThanID int) ([]Comment, error) {
+	values := &url.Values{}
+	values.Add("newer", strconv.Itoa(newerThanID))
+	values.Add("per_page", "50")
+
+	return c.submitCommentRequest(commentUrl, values)
+}
+
+// GetPostComments returns comments for a post
 func (c *Client) GetPostComments(postID int, olderThanID int, newerThanID int, count int, order string) ([]Comment, error) {
 	values := &url.Values{}
 	if olderThanID > -1 {
